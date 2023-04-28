@@ -10,4 +10,4 @@
 
 ## About the Diagram
 
-Some of the diagrams are powered by [mermaid](https://github.com/mermaid-js/mermaid).
+The diagrams are powered by [mermaid](https://mermaid.live/edit).
