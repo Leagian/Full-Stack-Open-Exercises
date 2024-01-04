@@ -9,36 +9,32 @@ const App = () => {
     "Premature optimization is the root of all evil.",
     "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.",
-    "The only way to go fast, is to go well.",
   ];
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
-  const addVote = () => {
+  const handleClickRandom = () => {
+    setSelected(Math.floor(Math.random() * anecdotes.length));
+  };
+
+  const handleClickVote = () => {
     const copyVotes = [...votes];
     copyVotes[selected]++;
     setVotes(copyVotes);
   };
 
-  const maxVotesIndex = votes.indexOf(Math.max(...votes));
-
-  const random = () => {
-    const randomIndex = Math.floor(Math.random() * anecdotes.length);
-    setSelected(randomIndex);
-  };
-
   return (
-    <div>
+    <>
       <h1>Anecdote of the day</h1>
-      <p>{anecdotes[selected]}</p>
+      <div>{anecdotes[selected]}</div>
       <p>has {votes[selected]} votes</p>
-      <button onClick={addVote}>Vote</button>
-      <button onClick={random}>Next anecdote</button>
+      <button onClick={handleClickVote}>Vote</button>
+      <button onClick={handleClickRandom}>Next Anecdote</button>
       <h1>Anecdote with most votes</h1>
-      <p>{anecdotes[maxVotesIndex]}</p>
-      <p>has {votes[maxVotesIndex]} votes</p>
-    </div>
+      <div>{anecdotes[votes.indexOf(Math.max(...votes))]}</div>
+      <p>has {votes[votes.indexOf(Math.max(...votes))]} votes</p>
+    </>
   );
 };
 
