@@ -19,14 +19,12 @@ const Content = ({ course }) => {
 };
 
 const Total = ({ course }) => {
-  return (
-    <p>
-      Number of exercises{" "}
-      {course.parts[0].exercises +
-        course.parts[1].exercises +
-        course.parts[2].exercises}
-    </p>
+  const totalExercises = course.parts.reduce(
+    (accumulator, part) => accumulator + part.exercises,
+    0
   );
+
+  return <p>Number of exercises {totalExercises}</p>;
 };
 
 const App = () => {
