@@ -1,70 +1,58 @@
+import React from "react";
+
 const Header = ({ course }) => {
-  return <h1>{course}</h1>;
+  return <h1>{course.name}</h1>;
 };
 
-const Part = ({ part, exercises }) => {
-  return (
-    <>
-      <p>
-        {part} {exercises}
-      </p>
-    </>
-  );
+const Part = ({ part }) => {
+  return <p>{part.name}</p>;
 };
 
-const Content = ({ parts }) => {
+const Content = ({ course }) => {
   return (
-    <div>
-      {parts.map((part) => (
-        <Part key={part.id} part={part.name} exercises={part.exercises} />
+    <React.Fragment>
+      {course.parts.map((part, index) => (
+        <Part key={index} part={part} />
       ))}
-    </div>
+    </React.Fragment>
   );
 };
 
-const Total = ({ parts }) => {
-  const total = parts.reduce((acc, part) => acc + part.exercises, 0);
-  return <p>Number of exercises {total}</p>;
+const Total = ({ course }) => {
+  return (
+    <p>
+      Number of exercises{" "}
+      {course.parts[0].exercises +
+        course.parts[1].exercises +
+        course.parts[2].exercises}
+    </p>
+  );
 };
-
-// const Total = (props) => {
-//   const { parts } = props;
-//   let totalExercises = 0;
-
-//   for (let i = 0; i < parts.length; i++) {
-//     totalExercises += parts[i].exercises;
-//   }
-
-//   return (
-//     <p>Total number of exercises {totalExercises}</p>
-//   )
-// }
 
 const App = () => {
-  const course = "Half Stack application development";
-  const parts = [
-    {
-      id: 1,
-      name: "Fundamentals of React",
-      exercises: 10,
-    },
-    {
-      id: 2,
-      name: "Using props to pass data",
-      exercises: 7,
-    },
-    {
-      id: 3,
-      name: "State of a component",
-      exercises: 14,
-    },
-  ];
+  const course = {
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+      },
+    ],
+  };
 
   return (
     <div>
       <Header course={course} />
-      <Content parts={parts} />
-      <Total parts={parts} />
+      <Content course={course} />
+      <Total course={course} />
     </div>
   );
 };
