@@ -11,20 +11,23 @@ const Part = ({ part }) => {
 const Content = ({ course }) => {
   return (
     <React.Fragment>
-      {course.parts.map((part, index) => (
-        <Part key={index} part={part} />
-      ))}
+      <Part part={course.parts[0]} />
+      <Part part={course.parts[1]} />
+      <Part part={course.parts[2]} />
     </React.Fragment>
   );
 };
 
 const Total = ({ course }) => {
-  const totalExercises = course.parts.reduce(
-    (accumulator, part) => accumulator + part.exercises,
-    0
+  return (
+    <p>
+      {" "}
+      Number of exercises{" "}
+      {course.parts[0].exercises +
+        course.parts[1].exercises +
+        course.parts[2].exercises}
+    </p>
   );
-
-  return <p>Number of exercises {totalExercises}</p>;
 };
 
 const App = () => {
