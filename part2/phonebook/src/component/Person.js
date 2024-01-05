@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 
-const Person = ({ person, deletePerson }) => {
+const Person = ({ person }) => {
   return (
     <div>
       {person.name} {person.number}
-      <button onClick={() => deletePerson(person.id)}>delete</button>
     </div>
   );
 };

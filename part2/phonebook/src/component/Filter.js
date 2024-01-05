@@ -1,11 +1,10 @@
-import React from "react";
+import React from 'react';
 
-function Filter({ filterName, onFilterChange }) {
+function Filter({ search, handleSearch }) {
   return (
-    <div>
-      filter shown with:
-      <input value={filterName} onChange={onFilterChange} />
-    </div>
+    <label>
+      filter shown with <input onChange={handleSearch} value={search} />
+    </label>
   );
 }
 
