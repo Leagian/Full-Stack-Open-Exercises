@@ -3,12 +3,16 @@ import Persons from './component/Persons';
 import PersonForm from './component/PersonForm';
 import Filter from './component/Filter';
 import PersonService from './services/Persons';
+import Notification from './component/Notification';
+import Footer from './component/Footer';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     PersonService.getAllPersons()
@@ -16,7 +20,11 @@ const App = () => {
         setPersons(initialNotes);
       })
       .catch((error) => {
-        console.error('fail to get data');
+        console.error('Failed to get persons', error);
+        setErrorMessage(`fail to get persons`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
       });
   }, []);
 
@@ -45,6 +53,12 @@ const App = () => {
           })
           .catch((error) => {
             console.error('Failed to update person', error);
+            setErrorMessage(
+              `Information of ${newName} has already been removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
           });
       }
     } else {
@@ -53,9 +67,17 @@ const App = () => {
           setPersons(persons.concat(returnedNote));
           setNewName('');
           setNewNumber('');
+          setSuccessMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
         })
         .catch((error) => {
           console.error('Failed to create person', error);
+          setErrorMessage(`fail to create ${newName}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
         });
     }
   };
@@ -67,8 +89,12 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
         })
-        .catch(() => {
-          console.error('fail to delete data');
+        .catch((error) => {
+          console.error('Failed to delete person', error);
+          setErrorMessage(`fail to delete ${person.name}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
         });
     }
   };
@@ -95,6 +121,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+      />
       <Filter search={search} handleSearch={handleSearch} />
       <PersonForm
         newName={newName}
@@ -105,6 +135,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <Persons persons={personsToShow} onDelete={handleDeletePerson} />
+      <Footer />
     </div>
   );
 };
