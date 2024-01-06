@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Persons from './component/Persons';
 import PersonForm from './component/PersonForm';
 import Filter from './component/Filter';
+import PersonService from './services/Persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,9 +11,13 @@ const App = () => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data);
-    });
+    PersonService.getAllPersons()
+      .then((initialNotes) => {
+        setPersons(initialNotes);
+      })
+      .catch((error) => {
+        console.error('fail to get data');
+      });
   }, []);
 
   const handleAddPerson = (event) => {
@@ -24,16 +28,49 @@ const App = () => {
     };
     const nameExists = persons.find((person) => person.name === newName);
     if (nameExists) {
-      alert(`${newName} is already added to phonebook`);
-      return;
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        PersonService.updatePerson(nameExists.id, personObject)
+          .then((returnedNote) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== nameExists.id ? person : returnedNote
+              )
+            );
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch((error) => {
+            console.error('Failed to update person', error);
+          });
+      }
+    } else {
+      PersonService.createPerson(personObject)
+        .then((returnedNote) => {
+          setPersons(persons.concat(returnedNote));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          console.error('Failed to create person', error);
+        });
     }
-    axios
-      .post('http://localhost:3001/persons', personObject)
-      .then((response) => {
-        setPersons(persons.concat(response.data));
-      });
-    setNewName('');
-    setNewNumber('');
+  };
+
+  const handleDeletePerson = (id) => {
+    const person = persons.find((person) => person.id === id);
+    if (window.confirm(`Delete ${person.name}?`)) {
+      PersonService.deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch(() => {
+          console.error('fail to delete data');
+        });
+    }
   };
 
   const handleNameChange = (event) => {
@@ -67,7 +104,7 @@ const App = () => {
         handleAddPerson={handleAddPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} onDelete={handleDeletePerson} />
     </div>
   );
 };
