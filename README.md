@@ -1,6 +1,6 @@
 # Full Stack Open Exercises
 
-This project is the exercises of the [Full Stack Open](https://fullstackopen.com/).
+This project is the exercises of the [Full Stack Open](https://fullstackopen.com/en/).
 
 ## What is `Full Stack Open`
 
@@ -13,10 +13,12 @@ This project is the exercises of the [Full Stack Open](https://fullstackopen.com
   - [0.5: Single page app](part0/0.5.md)
   - [0.6: New note in single app](part0/0.6.md)
 - [Part 1: Introduction to React](./part1)
-  - [1.1-1.5: courseinfo](part1/courseinfo)
-  - [1.6-1.11: unicafe](part1/unicafe)
-  - [1.12-1.14: anecdotes](part1/anecdotes)
+  - [1.1-1.5: Courseinfo](part1/courseinfo)
+  - [1.6-1.11: Unicafe](part1/unicafe)
+  - [1.12-1.14: Anecdotes](part1/anecdotes)
 - [Part 2: Communicating with server](./part2)
-  - [2.1-2.5: Course information](part2/courseinfo)
-  - [2.6-2.11, 2.15-2.20: The Phonebook](part2/phonebook)
-  - [2.12-2.14: Data for countries](part2/countries)
+  - [2.1-2.5: Courseinfo](part2/courseinfo)
+  - [2.6-2.11, 2.15-2.20: Phonebook](part2/phonebook)
+  - [2.12-2.14: Countries](part2/countries)
+- [Part 3: Programming a server with NodeJS and Express](./part3)
+  - [3.1-3.6: Backend Phonebook](part3/backend-phonebook)

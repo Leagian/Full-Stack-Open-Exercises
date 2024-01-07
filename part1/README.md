@@ -4,6 +4,6 @@
 
 ## Table of Content
 
-- [1.1-1.5: courseinfo](./courseinfo)
-- [1.6-1.11: unicafe](./unicafe)
-- [1.12-1.14: anecdotes](./anecdotes)
+- [1.1-1.5: Courseinfo](./courseinfo)
+- [1.6-1.11: Unicafe](./unicafe)
+- [1.12-1.14: Anecdotes](./anecdotes)
