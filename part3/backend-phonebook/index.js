@@ -53,16 +53,22 @@ app.get('/api/persons/:id', (req, res) => {
 
 //*? Generate Id Function ?*//
 const generateId = () => {
-  const maxId =
-    persons.length > 0 ? Math.max(...persons.map((person) => person.id)) : 0;
-  return maxId + 1;
+  return Math.floor(Math.random() * 1000000);
+  //   const maxId =
+  //     persons.length > 0 ? Math.max(...persons.map((person) => person.id)) : 0;
+  //   return maxId + 1;
 };
 
 app.post('/api/persons', (req, res) => {
   const body = req.body;
-  if (!body.name) {
-    return res.status(400).json({ error: 'name missing' });
+  if (!body.name || !body.number) {
+    return res.status(400).json({ error: 'name or number missing' });
   }
+
+  if (persons.find((person) => person.name === body.name)) {
+    return res.status(400).json({ error: 'name must be unique' });
+  }
+
   const person = {
     id: generateId(),
     name: body.name,
