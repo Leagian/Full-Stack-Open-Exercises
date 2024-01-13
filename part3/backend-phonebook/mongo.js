@@ -23,22 +23,19 @@ mongoose
   .then((result) => {
     console.log("connected");
 
-    // const person = new Person({
-    //   name: "Cooks",
-    //   number: 123456789,
-    // });
+    //     const person = new Person({
+    //       name: "Cooks",
+    //       number: 123456789,
+    //     });
 
-    // return person.save();
-
-    Note.find({}).then((result) => {
-      result.forEach((note) => {
-        console.log(note);
-      });
-      mongoose.connection.close();
-    });
+    //     return person.save();
+    //   })
+    return Person.find({});
   })
-  .then(() => {
-    console.log("person saved!");
+  .then((people) => {
+    people.forEach((person) => {
+      console.log(person);
+    });
     return mongoose.connection.close();
   })
   .catch((err) => console.log(err));
