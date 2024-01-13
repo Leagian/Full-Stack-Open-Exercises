@@ -9,31 +9,36 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2];
 
-const url = `mongodb+srv://fullstack:${password}@cluster0.gey3fqx.mongodb.net/?retryWrites=true&w=majority`;
+const url = `mongodb+srv://fullstack:${password}@cluster0.gey3fqx.mongodb.net/phoneBookApp?retryWrites=true&w=majority`;
 
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: Number,
 });
 
-const Note = mongoose.model("Note", noteSchema);
+const Person = mongoose.model("Person", personSchema);
 
 mongoose
   .connect(url)
   .then((result) => {
     console.log("connected");
 
-    const note = new Note({
-      content: "HTML is Easy",
-      date: new Date(),
-      important: true,
-    });
+    // const person = new Person({
+    //   name: "Cooks",
+    //   number: 123456789,
+    // });
 
-    return note.save();
+    // return person.save();
+
+    Note.find({}).then((result) => {
+      result.forEach((note) => {
+        console.log(note);
+      });
+      mongoose.connection.close();
+    });
   })
   .then(() => {
-    console.log("note saved!");
+    console.log("person saved!");
     return mongoose.connection.close();
   })
   .catch((err) => console.log(err));
