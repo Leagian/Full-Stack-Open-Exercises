@@ -18,24 +18,20 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
-mongoose
-  .connect(url)
-  .then((result) => {
-    console.log("connected");
+mongoose.connect(url).then((result) => {
+  console.log("connected");
 
-    //     const person = new Person({
-    //       name: "Cooks",
-    //       number: 123456789,
-    //     });
+  //     const person = new Person({
+  //       name: "Cooks",
+  //       number: 123456789,
+  //     });
 
-    //     return person.save();
-    //   })
-    return Person.find({});
-  })
-  .then((people) => {
-    people.forEach((person) => {
+  //     return person.save();
+  //   })
+  Person.find({}).then((result) => {
+    result.forEach((person) => {
       console.log(person);
     });
-    return mongoose.connection.close();
-  })
-  .catch((err) => console.log(err));
+    mongoose.connection.close();
+  });
+});
