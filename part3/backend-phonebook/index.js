@@ -100,14 +100,15 @@ app.post("/api/persons", (req, res) => {
     number: body.number,
   };
 
-  persons = persons.concat(person);
-  res.json(person);
+ person.save().then((savedPerson) => {
+  res.json(savedPerson);
+ }
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter((person) => person.id !== id);
-  res.status(204).end();
+  Person.findById(req.params.id).then((person) => {
+    res.json(person);
+  })
 });
 
 const PORT = process.env.PORT;
