@@ -100,15 +100,15 @@ app.post("/api/persons", (req, res) => {
     number: body.number,
   };
 
- person.save().then((savedPerson) => {
-  res.json(savedPerson);
- }
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
   Person.findById(req.params.id).then((person) => {
     res.json(person);
-  })
+  });
 });
 
 const PORT = process.env.PORT;

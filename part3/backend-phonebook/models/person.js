@@ -13,6 +13,4 @@ personSchema.set("toJSON", {
   },
 });
 
-const url = process.env.MONGODB_URI;
-
 module.exports = mongoose.model("Person", personSchema);
