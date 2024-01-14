@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 const app = express();
+const mongoose = require("mongoose");
+const Person = require("./models/person");
 
 app.use(express.json());
 app.use(cors());
@@ -13,18 +15,16 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
-const password = process.argv[2];
+const url = process.env.MONGODB_URI;
 
-const url = `mongodb+srv://fullstack:${password}@cluster0.gey3fqx.mongodb.net/phoneBookApp?retryWrites=true&w=majority`;
-
-mongoose.connect(url);
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-});
-
-const Person = mongoose.model("Person", personSchema);
+mongoose
+  .connect(url)
+  .then((result) => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connecting to MongoDB:", error.message);
+  });
 
 let persons = [
   {
@@ -110,7 +110,7 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
