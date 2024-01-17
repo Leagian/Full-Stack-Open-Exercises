@@ -94,17 +94,31 @@ app.post("/api/persons", (req, res) => {
   Person.findOne({ name: body.name }).then((existingPerson) => {
     if (existingPerson) {
       return res.status(400).json({ error: "name must be unique" });
+    } else {
+      const person = new Person({
+        name: body.name,
+        number: body.number,
+      });
+
+      person.save().then((savedPerson) => {
+        res.json(savedPerson);
+      });
     }
   });
+});
 
-  const person = new Person({
+app.put("/api/persons/:id", (req, res, next) => {
+  const body = req.body;
+  const person = {
     name: body.name,
     number: body.number,
-  });
+  };
 
-  person.save().then((savedPerson) => {
-    res.json(savedPerson);
-  });
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      res.json(updatedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.delete("/api/persons/:id", (req, res, next) => {
