@@ -6,9 +6,9 @@ const app = express();
 const mongoose = require("mongoose");
 const Person = require("./models/person");
 
+app.use(express.static("build"));
 app.use(express.json());
 app.use(cors());
-app.use(express.static("build"));
 
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
@@ -65,19 +65,16 @@ app.get("/api/persons", (req, res) => {
   });
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   Person.findById(req.params.id)
     .then((person) => {
       if (person) {
         res.json(person);
       } else {
-        res.status(400).send(`This id ${req.params.id} doesn't exist`);
+        res.status(400).send(`This id ${req.params.id} doesn't exist`).end();
       }
     })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Server error");
-    });
+    .catch((error) => next(error));
 });
 
 //*? Generate Id Function ?*//
@@ -110,20 +107,25 @@ app.post("/api/persons", (req, res) => {
   });
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  Person.findByIdAndRemove(req.params.id)
+app.delete("/api/persons/:id", (req, res, next) => {
+  Person.findByIdAndDelete(req.params.id)
     .then((result) => {
-      if (result) {
-        res.json(result);
-      } else {
-        res.status(400).send(`This id ${req.params.id} doesn't exist`);
-      }
+      res.status(204).end();
     })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Server error");
-    });
+    .catch((error) => next(error));
 });
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
