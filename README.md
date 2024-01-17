@@ -21,4 +21,4 @@ This project is the exercises of the [Full Stack Open](https://fullstackopen.com
   - [2.6-2.11, 2.15-2.20: Phonebook](part2/phonebook)
   - [2.12-2.14: Countries](part2/countries)
 - [Part 3: Programming a server with NodeJS and Express](./part3)
-  - [3.1-3.8: Backend Phonebook](part3/backend-phonebook)
+  - [3.1-3.18: Backend Phonebook](part3/backend-phonebook)
