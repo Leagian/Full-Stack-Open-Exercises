@@ -54,9 +54,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/info", (req, res) => {
-  const date = new Date();
-  const count = persons.length;
-  res.send(`<p>Phonebook has info for ${count} people</p><p>${date}</p>`);
+  Person.countDocuments({}, (err, count) => {
+    const date = new Date();
+    res.send(`<p>Phonebook has info for ${count} people</p><p>${date}</p>`);
+  });
 });
 
 app.get("/api/persons", (req, res) => {
@@ -71,7 +72,7 @@ app.get("/api/persons/:id", (req, res, next) => {
       if (person) {
         res.json(person);
       } else {
-        res.status(400).send(`This id ${req.params.id} doesn't exist`).end();
+        res.status(404).end();
       }
     })
     .catch((error) => next(error));
