@@ -66,14 +66,18 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-  if (person) {
-    res.json(person);
-  } else {
-    res.send(`This id ${id} doesn't exist`);
-    res.status(400).end();
-  }
+  Person.findById(req.params.id)
+    .then((person) => {
+      if (person) {
+        res.json(person);
+      } else {
+        res.status(400).send(`This id ${req.params.id} doesn't exist`);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Server error");
+    });
 });
 
 //*? Generate Id Function ?*//
@@ -90,15 +94,16 @@ app.post("/api/persons", (req, res) => {
     return res.status(400).json({ error: "name or number missing" });
   }
 
-  if (persons.find((person) => person.name === body.name)) {
-    return res.status(400).json({ error: "name must be unique" });
-  }
+  Person.findOne({ name: body.name }).then((existingPerson) => {
+    if (existingPerson) {
+      return res.status(400).json({ error: "name must be unique" });
+    }
+  });
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  };
+  });
 
   person.save().then((savedPerson) => {
     res.json(savedPerson);
@@ -106,9 +111,18 @@ app.post("/api/persons", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  Person.findById(req.params.id).then((person) => {
-    res.json(person);
-  });
+  Person.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(400).send(`This id ${req.params.id} doesn't exist`);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Server error");
+    });
 });
 
 const PORT = process.env.PORT;
