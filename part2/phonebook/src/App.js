@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import Persons from './component/Persons';
-import PersonForm from './component/PersonForm';
-import Filter from './component/Filter';
-import PersonService from './services/Persons';
-import Notification from './component/Notification';
-import Footer from './component/Footer';
+import { useEffect, useState } from "react";
+import Persons from "./component/Persons";
+import PersonForm from "./component/PersonForm";
+import Filter from "./component/Filter";
+import PersonService from "./services/Persons";
+import Notification from "./component/Notification";
+import Footer from "./component/Footer";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState('');
-  const [search, setSearch] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [search, setSearch] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -20,7 +20,7 @@ const App = () => {
         setPersons(initialNotes);
       })
       .catch((error) => {
-        console.error('Failed to get persons', error);
+        console.error("Failed to get persons", error);
         setErrorMessage(`fail to get persons`);
         setTimeout(() => {
           setErrorMessage(null);
@@ -48,11 +48,11 @@ const App = () => {
                 person.id !== nameExists.id ? person : returnedNote
               )
             );
-            setNewName('');
-            setNewNumber('');
+            setNewName("");
+            setNewNumber("");
           })
           .catch((error) => {
-            console.error('Failed to update person', error);
+            console.error("Failed to update person", error);
             setErrorMessage(
               `Information of ${newName} has already been removed from server`
             );
@@ -65,16 +65,20 @@ const App = () => {
       PersonService.createPerson(personObject)
         .then((returnedNote) => {
           setPersons(persons.concat(returnedNote));
-          setNewName('');
-          setNewNumber('');
+          setNewName("");
+          setNewNumber("");
           setSuccessMessage(`Added ${newName}`);
           setTimeout(() => {
             setSuccessMessage(null);
           }, 5000);
         })
         .catch((error) => {
-          console.error('Failed to create person', error);
-          setErrorMessage(`fail to create ${newName}`);
+          console.error("Failed to create person", error);
+          const errorMessage =
+            error.response && error.response.data
+              ? error.response.data.error
+              : `fail to create ${newName}`;
+          setErrorMessage(errorMessage);
           setTimeout(() => {
             setErrorMessage(null);
           }, 5000);
@@ -90,7 +94,7 @@ const App = () => {
           setPersons(persons.filter((person) => person.id !== id));
         })
         .catch((error) => {
-          console.error('Failed to delete person', error);
+          console.error("Failed to delete person", error);
           setErrorMessage(`fail to delete ${person.name}`);
           setTimeout(() => {
             setErrorMessage(null);
@@ -112,7 +116,7 @@ const App = () => {
   };
 
   const personsToShow =
-    search === ''
+    search === ""
       ? persons
       : persons.filter((person) =>
           person.name.toLowerCase().includes(search.toLowerCase())
