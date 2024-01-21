@@ -22,3 +22,5 @@ This project is the exercises of the [Full Stack Open](https://fullstackopen.com
   - [2.12-2.14: Countries](part2/countries)
 - [Part 3: Programming a server with NodeJS and Express](./part3)
   - [3.1-3.22: Backend Phonebook](part3/backend-phonebook)
+- [Part 4: Testing Express servers, user administration](./part4)
+  - [4.1-4.2: Backend Bloglist](part4/backend-bloglist)
